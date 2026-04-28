@@ -1,0 +1,40 @@
+<!DOCTYPE html> 
+<html> 
+<head> 
+<title>Student System</title> 
+</head> 
+<body> 
+<h2>Add Student</h2> 
+<input id="name" placeholder="Name"> 
+<input id="email" placeholder="Email"> 
+<input id="course" placeholder="Course"> 
+<button onclick="addStudent()">Add</button> 
+<h2>Student List</h2> 
+<ul id="list"></ul> 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script> 
+<script> 
+const supabase = supabase.createClient( 
+"https://ymeerkuctxxiynauddvh.supabase.co", 
+"sb_publishable_nXnemjk5GdnF0Jtz8G35zg_cDKHSZLy" 
+); 
+async function addStudent() { 
+const name = document.getElementById("name").value; 
+const email = document.getElementById("email").value; 
+const course = document.getElementById("course").value; 
+await supabase.from("students").insert([{ name, email, course }]); 
+loadStudents(); 
+} 
+async function loadStudents() { 
+const { data } = await supabase.from("students").select("*"); 
+const list = document.getElementById("list"); 
+list.innerHTML = ""; 
+data.forEach(s => { 
+const li = document.createElement("li"); 
+li.innerText = s.name + " - " + s.course; 
+list.appendChild(li); 
+}); 
+} 
+loadStudents(); 
+</script> 
+</body> 
+</html>
