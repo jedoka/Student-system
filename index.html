@@ -13,9 +13,10 @@
 <ul id="list"></ul> 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script> 
 <script> 
+import {createClient} from '@supabase/supabase-js'
 const supabase = supabase.createClient( 
-"https://ymeerkuctxxiynauddvh.supabase.co", 
-"sb_publishable_nXnemjk5GdnF0Jtz8G35zg_cDKHSZLy" 
+'https://ymeerkuctxxiynauddvh.supabase.co', 
+'sb_publishable_nXnemjk5GdnF0Jtz8G35zg_cDKHSZLy' 
 ); 
 async function addStudent() { 
 const name = document.getElementById("name").value; 
