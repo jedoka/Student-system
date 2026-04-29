@@ -13,29 +13,38 @@
 <ul id="list"></ul> 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script> 
 <script> 
-import {createClient} from '@supabase/supabase-js'
-const supabase = supabase.createClient( 
-'https://ymeerkuctxxiynauddvh.supabase.co', 
-'sb_publishable_nXnemjk5GdnF0Jtz8G35zg_cDKHSZLy' 
-); 
+
+const { createClient } = window.supabase;
+const _supabase = createClient("https://ymeerkuctxxiynauddvh.supabase.co",
+ "sb_publishable_nXnemjk5GdnF0Jtz8G35zg_cDKHSZLy"); 
+
 async function addStudent() { 
-const name = document.getElementById("name").value; 
-const email = document.getElementById("email").value; 
-const course = document.getElementById("course").value; 
-await supabase.from("students").insert([{ name, email, course }]); 
-loadStudents(); 
+    const name = document.getElementById("name").value; 
+    const email = document.getElementById("email").value; 
+    const course = document.getElementById("course").value; 
+    
+    const { error } = await _supabase.from("students").insert([{ name, email, course }]); 
+    if (error) console.error("Error adding:", error);
+    
+    loadStudents(); 
 } 
+
 async function loadStudents() { 
-const { data } = await supabase.from("students").select("*"); 
-const list = document.getElementById("list"); 
-list.innerHTML = ""; 
-data.forEach(s => { 
-const li = document.createElement("li"); 
-li.innerText = s.name + " - " + s.course; 
-list.appendChild(li); 
-}); 
+    const { data, error } = await _supabase.from("students").select("*"); 
+    if (error) {
+        console.error("Error loading:", error);
+        return;
+    }
+
+    const list = document.getElementById("list"); 
+    list.innerHTML = ""; 
+    data.forEach(s => { 
+        const li = document.createElement("li"); 
+        li.innerText = `${s.name} - ${s.course}`; 
+        list.appendChild(li); 
+    }); 
 } 
-loadStudents(); 
-</script> 
+
+</script>
 </body> 
 </html>
